@@ -1,0 +1,31 @@
+{
+  "name": "@iter-tools/regex-playground",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@iter-tools/regex": "iter-tools/regex#c6328c4768b9532b60e5a017d14ee86bf6fd82d3",
+    "grommet": "^2.17.2",
+    "grommet-icons": "^4.5.0",
+    "iter-tools-es": "^7.3.1",
+    "next": "latest",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-is": "17.0.2",
+    "styled-components": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.23",
+    "@types/react": "17.0.43",
+    "@types/react-dom": "17.0.14",
+    "@types/styled-components": "5.1.24",
+    "babel-plugin-styled-components": "^1.12.0",
+    "prettier": "2.6.2",
+    "typescript": "4.6.3"
+  }
+}
