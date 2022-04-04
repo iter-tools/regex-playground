@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@iter-tools/regex': iter-tools/regex#c6328c4768b9532b60e5a017d14ee86bf6fd82d3
+  '@iter-tools/regex': iter-tools/regex#a35d6d13eb15f0a4d8d8405e20ee42c06ab51f4d
   '@types/node': 17.0.23
   '@types/react': 17.0.43
   '@types/react-dom': 17.0.14
@@ -19,7 +19,7 @@ specifiers:
   typescript: 4.6.3
 
 dependencies:
-  '@iter-tools/regex': github.com/iter-tools/regex/c6328c4768b9532b60e5a017d14ee86bf6fd82d3
+  '@iter-tools/regex': github.com/iter-tools/regex/a35d6d13eb15f0a4d8d8405e20ee42c06ab51f4d
   grommet: 2.22.0_cdce0472005fc9929e7dd0afca7bfa15
   grommet-icons: 4.7.0_cdce0472005fc9929e7dd0afca7bfa15
   iter-tools-es: 7.3.1
@@ -708,8 +708,8 @@ packages:
     hasBin: true
     dev: true
 
-  github.com/iter-tools/regex/c6328c4768b9532b60e5a017d14ee86bf6fd82d3:
-    resolution: {tarball: https://codeload.github.com/iter-tools/regex/tar.gz/c6328c4768b9532b60e5a017d14ee86bf6fd82d3}
+  github.com/iter-tools/regex/a35d6d13eb15f0a4d8d8405e20ee42c06ab51f4d:
+    resolution: {tarball: https://codeload.github.com/iter-tools/regex/tar.gz/a35d6d13eb15f0a4d8d8405e20ee42c06ab51f4d}
     name: '@iter-tools/regex'
     version: 0.2.0
     engines: {node: '>=12.0.0'}

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@iter-tools/regex": "iter-tools/regex#c6328c4768b9532b60e5a017d14ee86bf6fd82d3",
+    "@iter-tools/regex": "iter-tools/regex#a35d6d13eb15f0a4d8d8405e20ee42c06ab51f4d",
     "grommet": "^2.17.2",
     "grommet-icons": "^4.5.0",
     "iter-tools-es": "^7.3.1",

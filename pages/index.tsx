@@ -6,7 +6,7 @@ import { Box, Button, CheckBox, Header, Main, Markdown, TextInput } from 'gromme
 
 import { Grid, BlockQuote } from 'grommet-icons';
 import { PureComponent } from 'react';
-import { forkerate } from 'iter-tools-es';
+import { concat, forkerate } from 'iter-tools-es';
 import { Inspector } from '../components/inspector';
 
 type InspectorState = {
@@ -59,7 +59,7 @@ export default class App extends PureComponent<never, InspectorState> {
     this.setState({
       index: 0,
       width: 0,
-      forkr: forkerate(text as string),
+      forkr: forkerate(concat([null], text as string, [null])),
       engine: new Engine(parse(pattern as string, Object.keys(flags).join(''))),
       done: false,
       matches: [],
@@ -69,15 +69,18 @@ export default class App extends PureComponent<never, InspectorState> {
   step = () => {
     const { index, width, forkr, engine, matches } = this.state;
 
+    const [lastChr, chr] = forkr;
     if (width === 0) {
-      const { value, done } = engine.step0(index === 0, forkr.done, forkr.index, forkr.value);
-
-      if (value !== null) {
-      }
+      const { value, done } = engine.step0(lastChr, chr);
 
       this.setState({ width: 1, matches: value ? [...matches, ...value] : matches, done });
+
+      if (done && chr === null) {
+        forkr.advance();
+        this.setState({ index: index + 1 });
+      }
     } else {
-      engine.step1(forkr.value);
+      engine.step1(chr);
 
       forkr.advance();
       this.setState({ width: 0, index: index + 1 });
