@@ -105,8 +105,8 @@ export default class App extends PureComponent<never, InspectorState> {
         </Head>
         <form id="inputs">
           <Header background="white" pad="medium">
-            <TextInput name="pattern" icon={<Grid />} placeholder="pattern" />
-            <TextInput name="text" icon={<BlockQuote />} placeholder="text" />
+            <TextInput name="pattern" icon={<Grid />} value="ab" placeholder="pattern" />
+            <TextInput name="text" icon={<BlockQuote />} value="moab" placeholder="text" />
             <CheckBox name="g" label="g" />
             <CheckBox name="i" label="i" />
             <CheckBox name="s" label="s" />
