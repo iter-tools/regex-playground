@@ -71,7 +71,7 @@ export class Inspector extends Component<InspectorProps> {
               forkr={forkr}
               matches={matches}
               inspector={this}
-              style={{ position: 'relative', zIndex: 1 }}
+              style={{ position: 'relative', zIndex: 2 }}
             />
             <Box pad={{ left: 'xlarge' }} gap="medium" fill="horizontal">
               <IOStream id="input_stream" spacer={<Glyph glyph={null} />}>
@@ -80,10 +80,13 @@ export class Inspector extends Component<InspectorProps> {
               <IOStream id="output_stream" spacer={<Match globalIndex="-1" match={[]} />}>
                 {matches?.length ? (
                   <MatchStream engine={engine} matches={matches} />
-                ) : (
+                ) : engine && !engine.done ? (
                   '...no matches yet'
+                ) : (
+                  '...no matches'
                 )}
               </IOStream>
+              <Box id="ideal_viewbox" flex="grow" style={{ position: 'relative', zIndex: 0 }} />
             </Box>
           </>
           <StateTree engine={engine} style={{ position: 'absolute', inset: 0 }} />

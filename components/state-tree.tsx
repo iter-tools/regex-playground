@@ -1,7 +1,53 @@
 import { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 // @ts-ignore-error
-import { debugPrint } from '@iter-tools/regex/internal/debug';
+// import { debugPrint } from '@iter-tools/regex/internal/debug';
+
+const _debugPrint = (matcher: any, sentinel: any): string | null => {
+  if (matcher === null) return null;
+
+  let m = matcher;
+  let str = '';
+  while (m !== null) {
+    if (typeof matcher.match !== 'function') {
+      throw new Error('debugPrint can only print matchers.');
+    }
+
+    switch (m.name) {
+      case 'literal':
+        str += m.value;
+        break;
+      case 'boundaryAssertion':
+        str += '\\b';
+        break;
+      case 'edgeAssertion':
+        str += m.kind === 'start' ? '^' : '$';
+        break;
+      case 'expression':
+        str += `(${m.matchers.map((m: any) => _debugPrint(m, sentinel)).join('|')})`;
+        break;
+      case 'repeat':
+        if (m.repeatCont.name !== 'unmatched') {
+          str += `(${m.exprCont.seqs
+            .map((m: any) => _debugPrint(m, m.next))
+            .filter(Boolean)
+            .join('|')})*`;
+        }
+        break;
+      default:
+        break;
+    }
+
+    if (m.next === sentinel) {
+      return str === '' ? null : str;
+    } else {
+      m = m.next;
+    }
+  }
+  return str;
+};
+
+const debugPrint = (matcher: any) => _debugPrint(matcher, null);
 
 export const useD3 = (render, dependencies) => {
   const ref = useRef(null);
@@ -30,20 +76,28 @@ function Tree(
 
   // Compute the layout.
   const dx = 50;
-  const dy = width / (root.height + padding);
+  const dy = 150;
   d3.tree().nodeSize([dx, dy])(root);
 
   // Center the tree.
   let x0 = Infinity;
-  let x1 = -x0;
+  let x1 = -Infinity;
+  let y0 = Infinity;
+  let y1 = -Infinity;
   root.each((d: any) => {
     if (d.x > x1) x1 = d.x;
     if (d.x < x0) x0 = d.x;
+    if (d.y > y1) y1 = d.y;
+    if (d.y < y0) y0 = d.y;
   });
+
+  const ideal = document.getElementById('ideal_viewbox')?.getBoundingClientRect()!;
+
+  const viewBox = [x0 - ideal.left, y0 - dy - ideal.top, width, height];
 
   // prettier-ignore
   svg
-      .attr('viewBox', [(-dy * padding) / 2, x0 - dx, width, height])
+      .attr('viewBox', viewBox)
       .attr('font-family', 'sans-serif')
       .attr('font-size', 16);
 
