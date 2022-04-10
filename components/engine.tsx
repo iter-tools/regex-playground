@@ -89,6 +89,8 @@ export class Engine extends Component<EngineProps> {
       </>
     );
 
+    const columns: any = { columns: ['auto', 'auto'] };
+
     return (
       <ResponsiveContext.Consumer>
         {(size) => {
@@ -117,11 +119,7 @@ export class Engine extends Component<EngineProps> {
                 <Box direction="row" justify="between">
                   <Box>
                     {engine && (
-                      <NameValueList
-                        nameProps={{ align: 'end' }}
-                        columns={['auto', 'auto']}
-                        gap="xsmall"
-                      >
+                      <NameValueList nameProps={{ align: 'end' }} gap="xsmall" {...columns}>
                         <NameValuePair name="width">{engine.width}</NameValuePair>
                         <NameValuePair name="index">{engine.index}</NameValuePair>
                         <NameValuePair name="starved">{String(engine.starved)}</NameValuePair>
