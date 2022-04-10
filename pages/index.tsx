@@ -2,19 +2,25 @@ import Head from 'next/head';
 import { parse } from '@iter-tools/regex';
 // @ts-ignore-error
 import { Engine } from '@iter-tools/regex/internal/engine';
-import { Box, Button, CheckBox, Header, Main, Markdown, TextInput } from 'grommet';
+// @ts-ignore-error
+import { debugPrint } from '@iter-tools/regex/internal/debug';
+
+import { Grommet, Button, CheckBox, Header, Main, Markdown, TextInput } from 'grommet';
 
 import { Grid, BlockQuote } from 'grommet-icons';
-import { PureComponent } from 'react';
-import { concat, forkerate } from 'iter-tools-es';
+import { Component } from 'react';
+import { forkerate, concat } from 'iter-tools-es';
 import { Inspector } from '../components/inspector';
 
+if (typeof window !== 'undefined') {
+  (window as any).debugPrint = debugPrint;
+}
+
 type InspectorState = {
-  index: number;
-  width: number;
   engine: any;
   forkr: any;
-  done: boolean;
+  pattern: string;
+  text: string;
   matches: Array<Array<string | undefined>>;
 };
 
@@ -36,87 +42,101 @@ const Welcome = () => {
   );
 };
 
-export default class App extends PureComponent<never, InspectorState> {
+let url: URL | null = null;
+
+if (typeof document !== 'undefined') {
+  console.log('Welcome to the inspector! Try running:');
+  console.log('console.log($e)');
+
+  url = new URL(document.location.href);
+  document.getElementById('inputs')?.focus();
+}
+
+export default class App extends Component<never, InspectorState> {
   state: InspectorState = {
-    index: null!,
-    width: null!,
     engine: null,
     forkr: null,
-    done: null!,
     matches: null!,
+    pattern: url?.searchParams.get('pattern') || '',
+    text: url?.searchParams.get('text') || '',
   };
 
-  dispatch = (action) => {
-    switch (action.type) {
-      case 'step':
-        this.step();
-        break;
-    }
-  };
+  execute(pattern, flags, text) {
+    const engine = new Engine(parse(pattern as string, Object.keys(flags).join('')));
 
-  execute = () => {
-    const { pattern, text, ...flags } = Object.fromEntries(new FormData(document.forms[0]));
     this.setState({
-      index: 0,
-      width: 0,
-      forkr: forkerate(concat([null], text as string, [null])),
-      engine: new Engine(parse(pattern as string, Object.keys(flags).join(''))),
-      done: false,
+      forkr: forkerate(concat([null], text, [null])),
+      engine,
       matches: [],
     });
+
+    (window as any).$e = engine;
+  }
+
+  onPatternInput = (e) => {
+    this.setState({ pattern: e.target.value });
   };
 
-  step = () => {
-    const { index, width, forkr, engine, matches } = this.state;
+  onTextInput = (e) => {
+    this.setState({ text: e.target.value });
+  };
 
-    const [lastChr, chr] = forkr;
-    if (width === 0) {
-      const { value, done } = engine.step0(lastChr, chr);
+  onSubmit = (e) => {
+    const { pattern, text, ...flags } = Object.fromEntries(new FormData(e.target));
 
-      this.setState({ width: 1, matches: value ? [...matches, ...value] : matches, done });
+    this.execute(pattern, flags, text);
 
-      if (done && chr === null) {
-        forkr.advance();
-        this.setState({ index: index + 1 });
-      }
-    } else {
-      engine.step1(chr);
+    const url = new URL(document.location.href);
 
-      forkr.advance();
-      this.setState({ width: 0, index: index + 1 });
-    }
+    url.searchParams.set('pattern', pattern as string);
+    url.searchParams.set('text', text as string);
+
+    history.replaceState(null, '', url);
+
+    e.preventDefault();
   };
 
   render() {
-    const { engine } = this.state;
-    const content = engine ? <Inspector {...this.state} dispatch={this.dispatch} /> : <Welcome />;
-
+    const { pattern, text } = this.state;
     return (
-      <Box
-        flex
-        margin={{ horizontal: 'auto', vertical: '0' }}
-        width={{ max: '100%' }}
-        height={{ min: '100vh' }}
+      <Grommet
+        full
+        theme={{
+          tip: { content: { background: '#ffffffbb' } },
+        }}
         background="light-2"
+        style={{ display: 'flex', flexDirection: 'column' }}
       >
         <Head>
           <title>Regex playground</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <form id="inputs">
+        <form id="inputs" onSubmit={this.onSubmit}>
           <Header background="white" pad="medium">
-            <TextInput name="pattern" icon={<Grid />} placeholder="pattern" />
-            <TextInput name="text" icon={<BlockQuote />} placeholder="text" />
+            <TextInput
+              name="pattern"
+              icon={<Grid />}
+              value={pattern}
+              onInput={this.onPatternInput}
+              placeholder="pattern"
+            />
+            <TextInput
+              name="text"
+              icon={<BlockQuote />}
+              value={text}
+              onInput={this.onTextInput}
+              placeholder="text"
+            />
             <CheckBox name="g" label="g" />
             <CheckBox name="i" label="i" />
             <CheckBox name="s" label="s" />
             <CheckBox name="m" label="m" />
             <CheckBox name="y" label="y" />
-            <Button primary label="execute" onClick={this.execute} />
+            <Button primary type="submit" label="execute" />
           </Header>
         </form>
-        {content}
-      </Box>
+        <Inspector {...this.state} />
+      </Grommet>
     );
   }
 }
