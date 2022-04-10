@@ -45,6 +45,41 @@ export type EngineProps = {
   inspector: Component;
 };
 
+const InstanceBody = ({ engine }) => {
+  const columns: any = { columns: ['auto', 'auto'] };
+  return (
+    <CardBody gap="xxsmall" pad="small">
+      <Box direction="row" justify="between">
+        <Box>
+          <NameValueList nameProps={{ align: 'end' }} gap="xsmall" {...columns}>
+            <NameValuePair name="width">{engine.width}</NameValuePair>
+            <NameValuePair name="index">{engine.index}</NameValuePair>
+            <NameValuePair name="starved">{String(engine.starved)}</NameValuePair>
+            <NameValuePair name="done">{String(engine.done)}</NameValuePair>
+            <NameValuePair name="lastChr">{String(engine.lastChr)}</NameValuePair>
+            <NameValuePair name="chr">{String(engine.chr)}</NameValuePair>
+          </NameValueList>
+        </Box>
+        <Box
+          direction="column-reverse"
+          style={{ textAlign: 'right', fontSize: '18px', lineHeight: '24px' }}
+          gap="xsmall"
+        >
+          <Box as="strong">root</Box>
+        </Box>
+      </Box>
+    </CardBody>
+  );
+};
+
+const NullBody = () => {
+  return (
+    <CardBody gap="xxsmall" pad="small">
+      To create an engine, use the execute button
+    </CardBody>
+  );
+};
+
 export class Engine extends Component<EngineProps> {
   step() {
     const { forkr, engine, matches } = this.props;
@@ -89,8 +124,6 @@ export class Engine extends Component<EngineProps> {
       </>
     );
 
-    const columns: any = { columns: ['auto', 'auto'] };
-
     return (
       <ResponsiveContext.Consumer>
         {(size) => {
@@ -115,36 +148,7 @@ export class Engine extends Component<EngineProps> {
                   <StepButton engine={engine} dispatch={this.dispatch} />
                 </Box>
               </CardHeader>
-              <CardBody gap="xxsmall" pad="small">
-                <Box direction="row" justify="between">
-                  <Box>
-                    {engine && (
-                      <NameValueList nameProps={{ align: 'end' }} gap="xsmall" {...columns}>
-                        <NameValuePair name="width">{engine.width}</NameValuePair>
-                        <NameValuePair name="index">{engine.index}</NameValuePair>
-                        <NameValuePair name="starved">{String(engine.starved)}</NameValuePair>
-                        <NameValuePair name="done">{String(engine.done)}</NameValuePair>
-                        <NameValuePair name="lastChr">{String(engine.lastChr)}</NameValuePair>
-                        <NameValuePair name="chr">{String(engine.chr)}</NameValuePair>
-                      </NameValueList>
-                    )}
-                  </Box>
-                  <Box
-                    style={{ textAlign: 'right', fontSize: '18px', lineHeight: '24px' }}
-                    gap="xsmall"
-                  >
-                    <Box id="input_stream_socket">
-                      <strong>input</strong>
-                    </Box>
-                    <Box id="output_stream_socket">
-                      <strong>output</strong>
-                    </Box>
-                    <Box>
-                      <strong>root</strong>
-                    </Box>
-                  </Box>
-                </Box>
-              </CardBody>
+              {engine ? <InstanceBody engine={engine} /> : <NullBody />}
             </Card>
           );
         }}

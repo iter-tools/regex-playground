@@ -1,4 +1,4 @@
-import { Box, Diagram, Main, Stack } from 'grommet';
+import { Box, Main, Stack } from 'grommet';
 import { Component } from 'react';
 
 import { Engine } from './engine';
@@ -43,27 +43,6 @@ export class Inspector extends Component<InspectorProps> {
 
     return (
       <Box flex="grow" style={{ position: 'relative' }}>
-        <Diagram
-          style={{ position: 'absolute', zIndex: 1 }}
-          connections={[
-            {
-              fromTarget: 'input_stream_socket',
-              toTarget: 'input_stream',
-              anchor: 'horizontal',
-              thickness: 'xsmall',
-              color: 'neutral-3',
-              type: 'rectilinear',
-            },
-            {
-              fromTarget: 'output_stream_socket',
-              toTarget: 'output_stream',
-              anchor: 'horizontal',
-              thickness: 'xsmall',
-              color: 'neutral-3',
-              type: 'rectilinear',
-            },
-          ]}
-        />
         <Main pad="medium" direction="row">
           <>
             <Engine
