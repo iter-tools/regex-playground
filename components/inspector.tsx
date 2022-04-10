@@ -77,7 +77,7 @@ export class Inspector extends Component<InspectorProps> {
               <IOStream id="input_stream" spacer={<Glyph glyph={null} />}>
                 {forkr ? <GlyphStream forkr={forkr} /> : '...no input'}
               </IOStream>
-              <IOStream id="output_stream" spacer={<Match globalIndex="-1" match={[]} />}>
+              <IOStream id="output_stream" spacer={<Match match={[]} />}>
                 {matches?.length ? (
                   <MatchStream engine={engine} matches={matches} />
                 ) : engine && !engine.done ? (
