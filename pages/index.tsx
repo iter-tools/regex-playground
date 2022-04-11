@@ -24,24 +24,6 @@ type InspectorState = {
   matches: Array<Array<string | undefined>>;
 };
 
-const welcomeText = `
-
-Welcome to the [@iter-tools/regex](https://github.com/iter-tools/regex) playground!
-      
-This playground allows you to step through the incremental process by which \`@iter-tools/regex\`
-does matching.
-
-To get started, enter a pattern and some text to match against, press "execute" to setup the engine,
-then press the step button repeatedly to see how matching progresses.`;
-
-const Welcome = () => {
-  return (
-    <Main pad="medium">
-      <Markdown components={{ p: { props: { fill: true } } }}>{welcomeText}</Markdown>
-    </Main>
-  );
-};
-
 let url: URL | null = null;
 
 if (typeof document !== 'undefined') {
