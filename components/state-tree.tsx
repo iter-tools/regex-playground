@@ -68,32 +68,36 @@ function Tree(
   {
     // data is either tabular (array of objects) or hierarchy (nested objects)
     children, // if hierarchical data, given a d in data, returns its children
-    padding = 1, // horizontal padding for first and last column
   }: any = {},
 ) {
+  const parentBox = svg.node().parentElement.getBoundingClientRect();
+  const idealBox = document.getElementById('ideal_viewbox')?.getBoundingClientRect()!;
+
+  const zoom = d3.zoom().scaleExtent([1, 1]).on('zoom', zoomed);
+
+  const zoomGroup = svg.select('g[data-selector="pan"]');
+
+  function zoomed(event) {
+    const { transform } = event;
+    zoomGroup.attr('transform', transform);
+  }
+
   const root = d3.hierarchy(data, children);
-  const { height, width } = svg.node().parentElement.getBoundingClientRect();
 
   // Compute the layout.
   const dx = 50;
   const dy = 150;
   d3.tree().nodeSize([dx, dy])(root);
 
-  // Center the tree.
-  let x0 = Infinity;
-  let x1 = -Infinity;
-  let y0 = Infinity;
-  let y1 = -Infinity;
-  root.each((d: any) => {
-    if (d.x > x1) x1 = d.x;
-    if (d.x < x0) x0 = d.x;
-    if (d.y > y1) y1 = d.y;
-    if (d.y < y0) y0 = d.y;
-  });
+  const topPadding = idealBox.top - parentBox.top;
 
-  const ideal = document.getElementById('ideal_viewbox')?.getBoundingClientRect()!;
+  // To root is 0,0
+  const leftExtent = -idealBox.left;
+  const topExtent = -(topPadding + idealBox.height / 2);
 
-  const viewBox = [x0 - ideal.left, y0 - dy - ideal.top, width, height];
+  const viewBox = [leftExtent, topExtent, parentBox.width, parentBox.height];
+
+  svg.call(zoom);
 
   // prettier-ignore
   svg
@@ -160,8 +164,10 @@ export const StateTree = ({ engine, style }) => {
 
   return (
     <svg ref={svg} style={style}>
-      <g data-selector="first" />
-      <g data-selector="second" />
+      <g data-selector="pan">
+        <g data-selector="first" />
+        <g data-selector="second" />
+      </g>
     </svg>
   );
 };
