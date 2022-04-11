@@ -53,10 +53,31 @@ export const useD3 = (render, dependencies) => {
   const ref = useRef(null);
 
   useEffect(() => {
+    const onResize = () => {
+      computeViewbox(d3.select(ref.current));
+    };
+    window.addEventListener('resize', onResize);
     render(d3.select(ref.current));
-    return () => {};
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
   }, [ref.current, ...dependencies]);
   return ref;
+};
+
+const computeViewbox = (svg) => {
+  const parentBox = svg.node().parentElement.getBoundingClientRect();
+  const idealBox = document.getElementById('ideal_viewbox')?.getBoundingClientRect()!;
+
+  const topPadding = idealBox.top - parentBox.top;
+
+  // To root is 0,0
+  const leftExtent = -idealBox.left;
+  const topExtent = -(topPadding + idealBox.height / 2);
+
+  const viewBox = [leftExtent, topExtent, parentBox.width, parentBox.height];
+
+  svg.attr('viewBox', viewBox);
 };
 
 // Copyright 2021 Observable, Inc.
@@ -70,38 +91,24 @@ function Tree(
     children, // if hierarchical data, given a d in data, returns its children
   }: any = {},
 ) {
-  const parentBox = svg.node().parentElement.getBoundingClientRect();
-  const idealBox = document.getElementById('ideal_viewbox')?.getBoundingClientRect()!;
-
-  const zoom = d3.zoom().scaleExtent([1, 1]).on('zoom', zoomed);
-
   const zoomGroup = svg.select('g[data-selector="pan"]');
-
-  function zoomed(event) {
-    const { transform } = event;
-    zoomGroup.attr('transform', transform);
-  }
+  const zoom = d3
+    .zoom()
+    .scaleExtent([1, 1])
+    .on('zoom', (event) => {
+      zoomGroup.attr('transform', event.transform);
+    });
 
   const root = d3.hierarchy(data, children);
-
-  // Compute the layout.
   const dx = 50;
   const dy = 150;
   d3.tree().nodeSize([dx, dy])(root);
 
-  const topPadding = idealBox.top - parentBox.top;
-
-  // To root is 0,0
-  const leftExtent = -idealBox.left;
-  const topExtent = -(topPadding + idealBox.height / 2);
-
-  const viewBox = [leftExtent, topExtent, parentBox.width, parentBox.height];
-
+  computeViewbox(svg);
   svg.call(zoom);
 
   // prettier-ignore
   svg
-      .attr('viewBox', viewBox)
       .attr('font-family', 'sans-serif')
       .attr('font-size', 16);
 
