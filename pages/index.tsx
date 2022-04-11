@@ -5,7 +5,7 @@ import { Engine } from '@iter-tools/regex/internal/engine';
 // @ts-ignore-error
 import { debugPrint } from '@iter-tools/regex/internal/debug';
 
-import { Grommet, Button, CheckBox, Header, Main, Markdown, TextInput } from 'grommet';
+import { Grommet, Button, CheckBox, Header, TextInput } from 'grommet';
 
 import { Grid, BlockQuote } from 'grommet-icons';
 import { Component } from 'react';
@@ -94,7 +94,7 @@ export default class App extends Component<never, InspectorState> {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <form id="inputs" onSubmit={this.onSubmit}>
-          <Header background="white" pad="medium">
+          <Header background="white" pad="medium" elevation="medium">
             <TextInput
               name="pattern"
               icon={<Grid />}
