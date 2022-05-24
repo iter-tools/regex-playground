@@ -1,9 +1,13 @@
 import { Box, Card, CardBody } from 'grommet';
 
+const printMatch = (match) => {
+  return `Match [${match.map((str) => `'${str.replace(/'/g, "\\'")}'`).join(', ')}]`;
+};
+
 export const Match = ({ match }) => {
   return (
     <Card background="white" pad="small">
-      <CardBody>Match {JSON.stringify(match)}</CardBody>
+      <CardBody>{printMatch(match)}</CardBody>
     </Card>
   );
 };
