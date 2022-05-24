@@ -88,17 +88,20 @@ function Tree(
     .selectAll('text')
     .data(d => {
       const type = Object.getPrototypeOf(d.data).constructor.name;
+      const isUnmatchedSequence = d.data.next?.name === 'unmatched';
       return [
         {
           ...d,
           text: type,
           weight: 'bold',
+          style: 'normal',
           dy: '-.3em',
         },
         ...when(type === 'Sequence', () => [{
           ...d,
-          text: debugPrint(d.data.next),
+          text: isUnmatchedSequence ? 'unmatched' : debugPrint(d.data.next),
           weight: 'normal',
+          style: isUnmatchedSequence ? 'italic' : 'normal',
           dy: '.9em',
         }]),
       ];
@@ -107,6 +110,7 @@ function Tree(
       .attr('y', d => d.dy)
       .attr('x', '70px')
       .attr('font-weight', d => d.weight)
+      .attr('font-style', d => d.style)
       .attr('text-anchor', 'middle')
       .text(d => d.text)
 
