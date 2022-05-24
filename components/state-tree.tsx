@@ -1,23 +1,8 @@
 import { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
+import { when } from 'iter-tools-es';
 // @ts-ignore-error
 import { debugPrint } from '@iter-tools/regex/internal/debug';
-
-export const useD3 = (render, dependencies) => {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const onResize = () => {
-      computeViewbox(d3.select(ref.current));
-    };
-    window.addEventListener('resize', onResize);
-    render(d3.select(ref.current));
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  }, [ref.current, ...dependencies]);
-  return ref;
-};
 
 const computeViewbox = (svg) => {
   const parentBox = svg.node().parentElement.getBoundingClientRect();
@@ -26,7 +11,7 @@ const computeViewbox = (svg) => {
   const topPadding = idealBox.top - parentBox.top;
 
   // To root is 0,0
-  const leftExtent = -idealBox.left;
+  const leftExtent = -idealBox.left - 8;
   const topExtent = -(topPadding + idealBox.height / 2);
 
   const viewBox = [leftExtent, topExtent, parentBox.width, parentBox.height];
@@ -54,8 +39,8 @@ function Tree(
     });
 
   const root = d3.hierarchy(data, children);
-  const dx = 50;
-  const dy = 150;
+  const dx = 70;
+  const dy = 200;
   d3.tree().nodeSize([dx, dy])(root);
 
   computeViewbox(svg);
@@ -70,45 +55,60 @@ function Tree(
   svg.select("g[data-selector=\"first\"]")
       .attr("fill", "none")
       .attr("stroke", '#555')
-      .attr("stroke-width", 1.5)
+      .attr("stroke-width", 3)
     .selectAll("path")
       .data(root.links())
       .join("path")
         .attr("d", d3.linkHorizontal()
-            .x((d: any) => d.y)
+            .x((d: any) => d.y + 80)
             .y((d: any) => d.x));
 
   // prettier-ignore
-  const As = svg.select("g[data-selector=\"second\"]")
-    .selectAll('a')
+  const Gs = svg.select("g[data-selector=\"second\"]")
+    .selectAll('g')
     .data(root.descendants())
-    .join("a")
+    .join("g")
       .attr("transform", d => `translate(${d.y},${d.x})`);
 
   // prettier-ignore
-  As
-    .selectAll("circle")
-    .data([_ => _])
-    .join('circle')
-      .attr("fill", d => d.children ? '#555' : '#999')
-      .attr("r", 10);
+  Gs.selectAll('rect')
+  .data(_ => [_])
+  .join('rect')
+    .attr("width", '140px')
+    .attr("height", '3em')
+    .attr('rx', 6)
+    .attr('ry', 6)
+    .attr("fill", '#fff')
+    .attr("y", '-1.5em')
+    .attr("stroke", '#555')
+    .attr("stroke-width", 3);
 
   // prettier-ignore
-  As
+  Gs
     .selectAll('text')
-    .data(_ => [_])
+    .data(d => {
+      const type = Object.getPrototypeOf(d.data).constructor.name;
+      return [
+        {
+          ...d,
+          text: type,
+          weight: 'bold',
+          dy: '-.3em',
+        },
+        ...when(type === 'Sequence', () => [{
+          ...d,
+          text: debugPrint(d.data.next),
+          weight: 'normal',
+          dy: '.9em',
+        }]),
+      ];
+    })
     .join('text')
-      .attr('dy', '0.32em')
-      .attr('x', (d) => (d.children ? -16 : 16))
-      .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-      .text((d, i) => {
-        const type = Object.getPrototypeOf(d.data).constructor.name;
-        if (type === 'Sequence') {
-          return 'Sequence: ' + debugPrint(d.data.next);
-        } else {
-          return type;
-        }
-      })
+      .attr('y', d => d.dy)
+      .attr('x', '70px')
+      .attr('font-weight', d => d.weight)
+      .attr('text-anchor', 'middle')
+      .text(d => d.text)
 
   return svg.node();
 }
@@ -116,15 +116,21 @@ function Tree(
 export const StateTree = ({ engine, style }) => {
   if (!engine) return null;
 
-  const svg = useD3(
-    (svg) => {
-      return Tree(svg, engine.root);
-    },
-    [engine.root, engine.index, engine.width],
-  );
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const onResize = () => {
+      computeViewbox(d3.select(ref.current));
+    };
+    window.addEventListener('resize', onResize);
+    Tree(d3.select(ref.current), engine.root);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [ref.current, engine.root, engine.index, engine.width]);
 
   return (
-    <svg ref={svg} style={style}>
+    <svg ref={ref} style={style}>
       <g data-selector="pan">
         <g data-selector="first" />
         <g data-selector="second" />
