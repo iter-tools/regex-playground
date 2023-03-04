@@ -4,7 +4,7 @@ import { Component } from 'react';
 import { Engine } from './engine';
 import { Glyph, GlyphStream } from './glyph-stream';
 import { Match, MatchStream } from './match-stream';
-import { StateTree } from './state-tree';
+import { StateGraph } from './state-graph';
 import { Welcome } from './welcome';
 
 const padAll = (padding) => ({
@@ -75,7 +75,7 @@ export class Inspector extends Component<InspectorProps> {
               </Box>
             )}
           </>
-          <StateTree engine={engine} style={{ position: 'absolute', inset: 0 }} />
+          <StateGraph engine={engine} style={{ position: 'absolute', inset: 0 }} />
         </Main>
       </Box>
     );

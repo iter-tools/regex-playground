@@ -1,8 +1,29 @@
+import { when } from 'iter-tools-es';
 import { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
-import { when } from 'iter-tools-es';
-// @ts-ignore-error
-import { debugPrint } from '@iter-tools/regex/internal/debug';
+
+function* alternatives(match) {
+  let alternative = match.head.worse;
+
+  while (alternative) {
+    yield alternative.data;
+    alternative = alternative.worse;
+  }
+}
+
+// export const StateList = ({ engine, style }) => {
+//   if (!engine) return null;
+
+//   engine.root, engine.index, engine.width;
+
+//   const nodes = [
+//     ...map((alternative) => {
+//       return <li>Hello: {debugPrint(alternative.next)}</li>;
+//     }, alternatives(engine.root)),
+//   ];
+
+//   return <ol style={style}>{nodes}</ol>;
+// };
 
 const computeViewbox = (svg) => {
   const parentBox = svg.node().parentElement.getBoundingClientRect();
@@ -87,6 +108,7 @@ function Tree(
   Gs
     .selectAll('text')
     .data(d => {
+      debugger;
       const type = Object.getPrototypeOf(d.data).constructor.name;
       const isUnmatchedSequence = d.data.next?.name === 'unmatched';
       return [
@@ -117,7 +139,7 @@ function Tree(
   return svg.node();
 }
 
-export const StateTree = ({ engine, style }) => {
+export const StateGraph = ({ engine, style }) => {
   if (!engine) return null;
 
   const ref = useRef(null);
@@ -127,7 +149,11 @@ export const StateTree = ({ engine, style }) => {
       computeViewbox(d3.select(ref.current));
     };
     window.addEventListener('resize', onResize);
-    Tree(d3.select(ref.current), engine.root);
+    Tree(d3.select(ref.current), engine.root, {
+      children(node) {
+        return node.head ? alternatives(node) : [];
+      },
+    });
     return () => {
       window.removeEventListener('resize', onResize);
     };
