@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "pretest": "next lint",
-    "test": "tsc --noEmit",
+    "prepack": "next build && next export",
     "start": "if [ \"$NODE_ENV\" = production ]; then next start; else next dev; fi",
-    "prepack": "next build && next export"
+    "pretest": "next lint",
+    "test": "tsc --noEmit"
   },
   "dependencies": {
     "@iter-tools/regex": "^0.3.2",
@@ -21,6 +21,9 @@
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "next": "13.2.4",
+    "prettier": "^2.8.4",
+    "prettier-plugin-jsdoc": "^0.4.2",
+    "prettier-plugin-packagejson": "^2.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "4.9.5"
