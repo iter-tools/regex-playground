@@ -3,31 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "pretest": "next lint",
+    "test": "tsc --noEmit",
+    "start": "if [ \"$NODE_ENV\" = production ]; then next start; else next dev; fi",
+    "prepack": "next build && next export"
   },
   "dependencies": {
-    "@iter-tools/regex": "iter-tools/regex#a35a0259bf288ccece2a1f6ffebcfdb7ac953517",
-    "d3": "^7.4.2",
-    "grommet": "^2.17.2",
-    "grommet-icons": "^4.5.0",
-    "iter-tools-es": "^7.3.1",
-    "next": "13.1.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-is": "17.0.2",
-    "styled-components": "^5.3.0"
+    "@iter-tools/regex": "^0.3.2",
+    "d3": "^7.8.2",
+    "grommet": "^2.30.0",
+    "grommet-icons": "^4.10.0",
+    "iter-tools-es": "^7.5.1",
+    "react-is": "^18.2.0"
   },
   "devDependencies": {
-    "@types/d3": "7.1.0",
-    "@types/node": "17.0.23",
-    "@types/react": "17.0.43",
-    "@types/react-dom": "17.0.14",
-    "@types/styled-components": "5.1.24",
-    "babel-plugin-styled-components": "^1.12.0",
-    "prettier": "2.6.2",
-    "typescript": "4.6.3"
+    "@types/node": "18.15.0",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.9.5"
   }
 }
