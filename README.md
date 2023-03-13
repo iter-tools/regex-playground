@@ -1,24 +1,57 @@
-# @iter-tools/regex-playground
+# Regex playground
 
-`regex-playground` provides a playground for `@iter-tools/regex` to help you see how the engine evaluates patterns. It is useful for learning how a regex engine works, and for debugging.
+🪀 Playground to explore [`@iter-tools/regex`]
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). It is using the [Grommet](https://v2.grommet.io/) component library and [Typescript](https://www.typescriptlang.org/).
+<div align="center">
 
-## Getting Started
+![](https://user-images.githubusercontent.com/61068799/224835690-fa5333a0-5225-48ac-88e1-34acc2ac665c.png)
 
-To develop on this project run the `dev` [script](https://gist.github.com/conartist6/4f784765b76977ab3b95dc2b26ee9a15), which runs a local web server which live-reloads changes.
+<!-- prettier-ignore -->
+[Website](https://regex-playground-rho.vercel.app/)
+| [`@iter-tools/regex`](https://github.com/iter-tools/regex#readme)
 
-## Learn More
+</div>
 
-To learn more about Next.js, take a look at the following resources:
+🚂 View a flow diagram of a regex \
+🔎 Examine the `@iter-tools/regex` `Engine` \
+👀 See how a regex engine works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Browser](https://img.shields.io/static/v1?style=for-the-badge&message=Browser&color=4285F4&logo=Google+Chrome&logoColor=FFFFFF&label=)
 
-## Deploy on Vercel
+💻 You can view the site deployed to Vercel at
+[regex-playground-rho.vercel.app]!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Next.js](https://img.shields.io/static/v1?style=for-the-badge&message=Next.js&color=000000&logo=Next.js&logoColor=FFFFFF&label=)
+![Node.js](https://img.shields.io/static/v1?style=for-the-badge&message=Node.js&color=339933&logo=Node.js&logoColor=FFFFFF&label=)
+![TypeScript](https://img.shields.io/static/v1?style=for-the-badge&message=TypeScript&color=3178C6&logo=TypeScript&logoColor=FFFFFF&label=)
+
+This is a [Next.js] project bootstrapped with [`create-next-app`]. We use the
+[Grommet] component library and [TypeScript]. You can start your own local dev
+preview of the site using `npm run dev`. 🚀
+
+### Deployment
+
+![Vercel](https://img.shields.io/static/v1?style=for-the-badge&message=Vercel&color=000000&logo=Vercel&logoColor=FFFFFF&label=)
+
+This site is deployed to Vercel, the makers of Next.js. You can deploy your own
+instance of this site by heading over to [vercel.com/new] and picking your fork
+of this repo, or this repo itself.
+
+📚 You can learn more about Vercel and [their integration with Next.js] on
+[their website].
+
+<!-- prettier-ignore-start -->
+[`@iter-tools/regex`]: https://github.com/iter-tools/regex#readme
+[next.js]: https://nextjs.org/
+[`create-next-app`]: https://github.com/vercel/next.js/tree/canary/packages/create-next-app
+[regex-playground-rho.vercel.app]: https://regex-playground-rho.vercel.app/
+[grommet]: https://v2.grommet.io/
+[typescript]: https://www.typescriptlang.org/
+[vercel.com/new]: https://vercel.com/new
+[their integration with Next.js]: https://vercel.com/solutions/nextjs
+[their website]: https://vercel.com/
+<!-- prettier-ignore-end -->
