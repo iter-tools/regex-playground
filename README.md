@@ -4,7 +4,7 @@
 
 <div align="center">
 
-![](https://placekitten.com/600/400)
+![](https://user-images.githubusercontent.com/61068799/224835690-fa5333a0-5225-48ac-88e1-34acc2ac665c.png)
 
 <!-- prettier-ignore -->
 [Website](https://regex-playground-rho.vercel.app/)
