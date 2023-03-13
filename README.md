@@ -21,12 +21,6 @@
 💻 You can view the site deployed to Vercel at
 [regex-playground-rho.vercel.app]!
 
-<div align="center">
-
-![](https://placekitten.com/400/300)
-
-</div>
-
 ## Development
 
 This is a [Next.js] project bootstrapped with [`create-next-app`]. We use the
