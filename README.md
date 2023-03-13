@@ -18,16 +18,24 @@
 
 ## Usage
 
+![Browser](https://img.shields.io/static/v1?style=for-the-badge&message=Browser&color=4285F4&logo=Google+Chrome&logoColor=FFFFFF&label=)
+
 💻 You can view the site deployed to Vercel at
 [regex-playground-rho.vercel.app]!
 
 ## Development
+
+![Next.js](https://img.shields.io/static/v1?style=for-the-badge&message=Next.js&color=000000&logo=Next.js&logoColor=FFFFFF&label=)
+![Node.js](https://img.shields.io/static/v1?style=for-the-badge&message=Node.js&color=339933&logo=Node.js&logoColor=FFFFFF&label=)
+![TypeScript](https://img.shields.io/static/v1?style=for-the-badge&message=TypeScript&color=3178C6&logo=TypeScript&logoColor=FFFFFF&label=)
 
 This is a [Next.js] project bootstrapped with [`create-next-app`]. We use the
 [Grommet] component library and [TypeScript]. You can start your own local dev
 preview of the site using `npm run dev`. 🚀
 
 ### Deployment
+
+![Vercel](https://img.shields.io/static/v1?style=for-the-badge&message=Vercel&color=000000&logo=Vercel&logoColor=FFFFFF&label=)
 
 This site is deployed to Vercel, the makers of Next.js. You can deploy your own
 instance of this site by heading over to [vercel.com/new] and picking your fork
