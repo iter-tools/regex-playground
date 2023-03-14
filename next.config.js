@@ -1,6 +1,18 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
+const mdxDefineConfig = require("@next/mdx");
 
-module.exports = nextConfig
+const mdxMergeConfig = mdxDefineConfig({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+    providerImportSource: "@mdx-js/react",
+  },
+});
+
+/** @type {import("next").NextConfig} */
+const nextConfig = mdxMergeConfig({
+  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  reactStrictMode: true,
+});
+
+module.exports = nextConfig;
